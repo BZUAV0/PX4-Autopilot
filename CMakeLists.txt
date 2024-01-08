@@ -103,6 +103,7 @@ cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 
 set(PX4_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE FILEPATH "PX4 source directory" FORCE)
 set(PX4_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE FILEPATH "PX4 binary directory" FORCE)
+set(PX4_PLATFORM "nuttx")
 
 list(APPEND CMAKE_MODULE_PATH ${PX4_SOURCE_DIR}/cmake)
 include(px4_parse_function_args)
@@ -120,6 +121,7 @@ execute_process(
 	)
 
 # git describe to X.Y.Z version
+message(STATUS "PX4 git tag: ${PX4_GIT_TAG}")
 string(REPLACE "." ";" VERSION_LIST ${PX4_GIT_TAG})
 
 # major version
@@ -179,6 +181,8 @@ if(PYTHON_COVERAGE)
 	set(PYTHON_EXECUTABLE coverage run -p)
 endif()
 
+include(platforms/${PX4_PLATFORM}/cmake/px4_impl_os.cmake)
+list(APPEND CMAKE_MODULE_PATH ${PX4_SOURCE_DIR}/platforms/${PX4_PLATFORM}/cmake)
 include(px4_config)
 include(kconfig)
 message(STATUS "PX4 config: ${PX4_CONFIG}")
@@ -208,9 +212,6 @@ if(NOT EXTERNAL_MODULES_LOCATION STREQUAL "")
 endif()
 
 set_property(GLOBAL PROPERTY PX4_MODULE_CONFIG_FILES)
-
-include(platforms/${PX4_PLATFORM}/cmake/px4_impl_os.cmake)
-list(APPEND CMAKE_MODULE_PATH ${PX4_SOURCE_DIR}/platforms/${PX4_PLATFORM}/cmake)
 
 if(EXISTS "${PX4_SOURCE_DIR}/platforms/${PX4_PLATFORM}/cmake/init.cmake")
 	include(init)

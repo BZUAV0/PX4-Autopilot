@@ -392,8 +392,8 @@ if(EXISTS ${BOARD_DEFCONFIG})
 		set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type" FORCE)
 	endif()
 
-	include(px4_impl_os)
-	px4_os_prebuild_targets(OUT prebuild_targets BOARD ${PX4_BOARD})
+	# include(px4_impl_os)
+	# px4_os_prebuild_targets(OUT prebuild_targets BOARD ${PX4_BOARD})
 
 	# add board config directory src to build modules
 	file(RELATIVE_PATH board_support_src_rel ${PX4_SOURCE_DIR}/src ${PX4_BOARD_DIR})
