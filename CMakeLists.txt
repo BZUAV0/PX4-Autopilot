@@ -108,6 +108,8 @@ set(PX4_PLATFORM "nuttx")
 list(APPEND CMAKE_MODULE_PATH ${PX4_SOURCE_DIR}/cmake)
 include(px4_parse_function_args)
 # Cosmos add this test
+# secend test
+# third
 
 #=============================================================================
 # git
