@@ -107,17 +107,13 @@ set(PX4_PLATFORM "nuttx")
 
 list(APPEND CMAKE_MODULE_PATH ${PX4_SOURCE_DIR}/cmake)
 include(px4_parse_function_args)
-# Cosmos add this test
-# secend test
-# third
-# fourth
-# fifth
-# six
 
 #=============================================================================
 # git
 #
 include(px4_git)
+
+message(STATUS "PX$ source dir: ${PX4_SOURCE_DIR}")
 
 execute_process(
 	COMMAND git describe --exclude ext/* --always --tags
@@ -129,6 +125,7 @@ execute_process(
 # git describe to X.Y.Z version
 message(STATUS "PX4 git tag: ${PX4_GIT_TAG}")
 string(REPLACE "." ";" VERSION_LIST ${PX4_GIT_TAG})
+message(STATUS "PX4 version list: ${VERSION_LIST}")
 
 # major version
 list(GET VERSION_LIST 0 PX4_VERSION_MAJOR)
