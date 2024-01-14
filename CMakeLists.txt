@@ -113,7 +113,7 @@ include(px4_parse_function_args)
 #
 include(px4_git)
 
-message(STATUS "PX$ source dir: ${PX4_SOURCE_DIR}")
+message(STATUS "PX4 source dir: ${PX4_SOURCE_DIR}")
 
 execute_process(
 	COMMAND git describe --exclude ext/* --always --tags
