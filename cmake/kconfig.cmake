@@ -29,26 +29,20 @@ set(COMMON_KCONFIG_ENV_SETTINGS
 
 set(config_user_list)
 
-message(STATUS "CMAKE_COMMAND: ${CMAKE_COMMAND}")
-message(STATUS "COMMON_KCONFIG_ENV_SETTINGS: ${COMMON_KCONFIG_ENV_SETTINGS}")
-message(STATUS "DEFCONFIG_PATH: ${DEFCONFIG_PATH}")
-message(STATUS "BOARD_DEFCONFIG: ${BOARD_DEFCONFIG}")
-message(STATUS "PX4_SOURCE_DIR: ${PX4_SOURCE_DIR}")
+# if(EXISTS ${BOARD_DEFCONFIG})
 
-if(EXISTS ${BOARD_DEFCONFIG})
+	# # Depend on BOARD_DEFCONFIG so that we reconfigure on config change
+	# set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${BOARD_DEFCONFIG})
 
-	# Depend on BOARD_DEFCONFIG so that we reconfigure on config change
-	set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${BOARD_DEFCONFIG})
-
-	if(${LABEL} MATCHES "default" OR ${LABEL} MATCHES "recovery" OR ${LABEL} MATCHES "bootloader" OR ${LABEL} MATCHES "canbootloader")
-		# Generate boardconfig from saved defconfig
-		execute_process(
-			COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS}
-			${DEFCONFIG_PATH} ${BOARD_DEFCONFIG}
-			WORKING_DIRECTORY ${PX4_SOURCE_DIR}
-			OUTPUT_VARIABLE DUMMY_RESULTS
-		)
-	else()
+	# if(${LABEL} MATCHES "default" OR ${LABEL} MATCHES "recovery" OR ${LABEL} MATCHES "bootloader" OR ${LABEL} MATCHES "canbootloader")
+	# 	# Generate boardconfig from saved defconfig
+	# 	execute_process(
+	# 		COMMAND ${CMAKE_COMMAND} -E env ${COMMON_KCONFIG_ENV_SETTINGS}
+	# 		${DEFCONFIG_PATH} ${BOARD_DEFCONFIG}
+	# 		WORKING_DIRECTORY ${PX4_SOURCE_DIR}
+	# 		OUTPUT_VARIABLE DUMMY_RESULTS
+	# 	)
+	# else()
 	message(STATUS "BOARD_DEFCONFIG: ${BOARD_DEFCONFIG}")
 	message(STATUS "BOARD_CONFIG: ${BOARD_CONFIG}")
 	message(STATUS "MENUCONFIG_PATH: ${MENUCONFIG_PATH}")
@@ -67,7 +61,7 @@ if(EXISTS ${BOARD_DEFCONFIG})
 			WORKING_DIRECTORY ${PX4_SOURCE_DIR}
 			OUTPUT_VARIABLE DUMMY_RESULTS
 		)
-	endif()
+	# endif()
 
     # Generate header file for C/C++ preprocessor
     execute_process(
@@ -409,8 +403,8 @@ if(EXISTS ${BOARD_DEFCONFIG})
 		set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type" FORCE)
 	endif()
 
-	# include(px4_impl_os)
-	# px4_os_prebuild_targets(OUT prebuild_targets BOARD ${PX4_BOARD})
+	include(px4_impl_os)
+	px4_os_prebuild_targets(OUT prebuild_targets BOARD ${PX4_BOARD})
 
 	# add board config directory src to build modules
 	file(RELATIVE_PATH board_support_src_rel ${PX4_SOURCE_DIR}/src ${PX4_BOARD_DIR})
@@ -419,7 +413,7 @@ if(EXISTS ${BOARD_DEFCONFIG})
 	set(config_module_list ${config_module_list})
 	set(config_kernel_list ${config_kernel_list})
 
-endif()
+# endif()
 
 
 if(${LABEL} MATCHES "default" OR ${LABEL} MATCHES "bootloader" OR ${LABEL} MATCHES "canbootloader")

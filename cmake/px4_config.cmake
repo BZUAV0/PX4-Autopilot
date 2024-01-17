@@ -98,6 +98,9 @@ message(STATUS "PX4 config file: ${PX4_CONFIG_FILE}")
 
 include_directories(${PX4_BOARD_DIR}/src)
 
+message(STATUS "Vendor: ${VENDOR}")
+message(STATUS "Model: ${MODEL}")
+
 set(PX4_BOARD ${VENDOR}_${MODEL} CACHE STRING "PX4 board" FORCE)
 
 # board name is uppercase with no underscores when used as a define

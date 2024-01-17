@@ -66,8 +66,25 @@ px4_add_git_submodule(TARGET git_nuttx_apps PATH "${NUTTX_SRC_DIR}/apps")
 # make olddefconfig (inflate defconfig to full .config)
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${NUTTX_CONFIG_DIR}/src) # needed for NuttX build
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${NUTTX_SRC_DIR}/Make.defs.in ${NUTTX_DIR}/Make.defs) # Create a temporary Toplevel Make.defs for the oldconfig step
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${NUTTX_DEFCONFIG} ${NUTTX_DIR}/.config)
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${NUTTX_DEFCONFIG} ${NUTTX_DIR}/defconfig)
+if(EXISTS ${NUTTX_DEFCONFIG})
+    execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${NUTTX_DEFCONFIG} ${NUTTX_DIR}/.config)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${NUTTX_DEFCONFIG} ${NUTTX_DIR}/defconfig)
+else()
+    message(WARNING "Source file ${NUTTX_DEFCONFIG} does not exist.")
+endif()
+
+message(STATUS "CMAKE_CXX_COMPILER_ID: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "CMAKE_CXX_COMPILER_VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS "PX4_BOARD: ${PX4_BOARD}")
+message(STATUS "PX4_BINARY_DIR: ${PX4_BINARY_DIR}")
+message(STATUS "PX4_BOARD_DIR: ${PX4_BOARD_DIR}")
+message(STATUS "NUTTX_CONFIG_DIR: ${NUTTX_CONFIG_DIR}")
+message(STATUS "NUTTX_DEFCONFIG: ${NUTTX_DEFCONFIG}")
+message(STATUS "NUTTX_SRC_DIR: ${NUTTX_SRC_DIR}")
+message(STATUS "NUTTX_DIR: ${NUTTX_DIR}")
+message(STATUS "NUTTX_APPS_DIR: ${NUTTX_APPS_DIR}")
+message(STATUS "NUTTX_CONFIG: ${NUTTX_CONFIG}")
+
 
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${NUTTX_DIR}/defconfig)
 
@@ -81,6 +98,9 @@ execute_process(
 	COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/defconfig_inflate_stamp
 	WORKING_DIRECTORY ${NUTTX_DIR}
 )
+
+message(STATUS "NUTTX_DIR: ${NUTTX_DIR}")
+message(STATUS "PX4_BINARY_DIR: ${PX4_BINARY_DIR}")
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${NUTTX_DIR}/.config ${PX4_BINARY_DIR}/NuttX/nuttx/.config)
 
 ###############################################################################

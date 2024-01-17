@@ -1,3 +1,7 @@
+/*
+ *   Copyright (c) 2024
+ *   All rights reserved.
+ */
 /************************************************************************************
  * nuttx-configs/px4_fmu-v5/include/board.h
  *
